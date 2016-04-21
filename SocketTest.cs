@@ -34,7 +34,7 @@ public class SocketTest
             connected = true; // only a temporary thing, very unsafe but its just for testing
             Debug.Log("Connected to: " + socket.RemoteEndPoint.ToString() + Environment.NewLine);
 
-        } catch (Exception exception)
+        } catch (Exception)
         {
 
             Debug.Log("Couldn't Connect!");
@@ -61,7 +61,7 @@ public class SocketTest
                 //Debug.Log("sent byte[]");
 
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 Debug.Log("Connection Was Closed! while sending byte[]");
                 connected = false;
@@ -87,8 +87,8 @@ public class SocketTest
 
                 //Debug.Log("sent int");
 
-            } catch (Exception ex)
-            { 
+            } catch (Exception)
+            {
                 Debug.Log("Connection Was Closed! while sending int");
                 connected = false;
                 socket.Shutdown(SocketShutdown.Send);
@@ -103,7 +103,7 @@ public class SocketTest
     {
         if (connected)
         {
-            Debug.Log("is connected and i'm reading quaternion");
+            //Debug.Log("is connected and i'm reading quaternion");
 
             try
             {
@@ -115,10 +115,10 @@ public class SocketTest
                 float z = NetworkToHostOrder(reader.ReadSingle());
                 float w = NetworkToHostOrder(reader.ReadSingle());
 
-                return new float[] { x, y, 0, w };
+                return new float[] { -y, x, -z, w };
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Debug.Log("Connection Was Closed! while reading quaternion");
                 connected = false;

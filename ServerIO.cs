@@ -1,17 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ServerIO : MonoBehaviour {
-
+public class ServerIO : MonoBehaviour
+{
     private SocketTest socket;
     private Texture2D texture;
     private InputManager inputManager;
 
-    void Awake() {
-    }
+    public GameObject target;
 
-    void Start () {
-
+    void Start ()
+    {
         // Create a texture the size of the screen, RGB24 format
         int width = Screen.width;
         int height = Screen.height;
@@ -20,26 +19,15 @@ public class ServerIO : MonoBehaviour {
         socket = new SocketTest();
         socket.sendData(0);
 
-        inputManager = InputManager.getInstance().init(socket);
+        inputManager = new InputManager(socket, target);
     }
 
-	void Update () {
-        //camera.transform.LookAt(q.eulerAngles);
-        //camera.transform.rotation *= q;
-
-        //cameraQuat = camera.transform.rotation;
-        //cameraEuler = camera.transform.rotation.eulerAngles;
-
-        //phoneQuat = inputManager.getQuaternion();
-        //phoneEuler = phoneQuat.eulerAngles;
-
-        //target.transform.rotation *= phoneQuat;
-    }
-
-    void LateUpdate()
+	void Update ()
     {
         StartCoroutine(UploadPNG());
-    }
+
+        inputManager.updateTarget();
+     }
 
     void OnApplicationQuit()
     {

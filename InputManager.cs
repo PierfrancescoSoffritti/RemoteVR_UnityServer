@@ -1,50 +1,53 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using UnityEngine;
-
 
 class InputManager
 {
+    private SocketTest mSocket;
 
-    private static InputManager instance = new InputManager();
+    // target
+    private GameObject mTarget;
+    private Quaternion targetInitialRotation;
 
-    SocketTest mSocket;
-    float[] quaternion;
-    MutablePose3D headPose;
+    // gyro
+    private float[] gyroQuaternion;
+    private float[] gyroInitialRotation = null;
 
-    public static InputManager getInstance()
+    public InputManager(SocketTest socket, GameObject target)
     {
-        return instance;
+        init(socket, target);
     }
 
-    public InputManager init(SocketTest socket)
+    public void init(SocketTest socket, GameObject target)
     {
-        this.mSocket = socket;
+        mSocket = socket;
 
-        headPose = new MutablePose3D();
+        mTarget = target;
+        targetInitialRotation = target.transform.rotation;
 
         Thread t = new Thread(new ThreadStart(readQuaternion));
         t.Start();
-
-        return instance;
     }
 
     void readQuaternion()
     {
-        while (true)
+        while ((gyroQuaternion = mSocket.readQuaternion()) != null)
         {
-            quaternion = mSocket.readQuaternion();
-            //headPose.Set(Vector3.zero, new Quaternion(quaternion[0], quaternion[1], quaternion[2], quaternion[3]));
+            if (gyroInitialRotation == null)
+                gyroInitialRotation = gyroQuaternion;
         }
     }
 
-    public Pose3D getHeadPose()
+    public void updateTarget()
     {
-        return headPose;
-    }
+        if(gyroInitialRotation != null)
+        { 
+            Quaternion offsetRotation = 
+                Quaternion.Inverse(new Quaternion(gyroInitialRotation[0], gyroInitialRotation[1], gyroInitialRotation[2], gyroInitialRotation[3])) 
+                * new Quaternion(gyroQuaternion[0], gyroQuaternion[1], gyroQuaternion[2], gyroQuaternion[3]);
 
-    public Quaternion getQuaternion()
-    {
-        return new Quaternion(quaternion[0], quaternion[1], quaternion[2], quaternion[3]);
+            mTarget.transform.rotation = targetInitialRotation * offsetRotation;
+        }
     }
-
 }
