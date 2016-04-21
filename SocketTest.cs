@@ -19,18 +19,20 @@ public class SocketTest
 
     public SocketTest()
     {
-        // default settings
-        //ip = "localhost";
         port = 2099;
         localEndPoint = new IPEndPoint(Dns.GetHostEntry("localhost").AddressList[0], port);
-        // Create a TCP/IP socket.
+
         socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         connected = false;
 
-        // this starts the connection
         try
         {
             socket.Connect(localEndPoint);
+
+            stream = new NetworkStream(socket);
+            writer = new BinaryWriter(stream);
+            reader = new BinaryReader(stream);
+
             connected = true; // only a temporary thing, very unsafe but its just for testing
             Debug.Log("Connected to: " + socket.RemoteEndPoint.ToString() + Environment.NewLine);
 
@@ -50,15 +52,7 @@ public class SocketTest
 
             try
             {
-                stream = new NetworkStream(socket);
-                writer = new BinaryWriter(stream);
-
                 writer.Write(data);
-
-                //for (int i=0; i<data.Length; i++)
-                    //writer.Write(data[i]);
-
-                //Debug.Log("sent byte[]");
 
             }
             catch (Exception)
@@ -81,8 +75,6 @@ public class SocketTest
 
             try
             {
-                stream = new NetworkStream(socket);
-                writer = new BinaryWriter(stream);
                 writer.Write(IPAddress.HostToNetworkOrder(data));
 
                 //Debug.Log("sent int");
@@ -107,13 +99,21 @@ public class SocketTest
 
             try
             {
-                stream = new NetworkStream(socket);
-                reader = new BinaryReader(stream);
+                byte[] quaternion = reader.ReadBytes(4*4);
 
-                float x = NetworkToHostOrder(reader.ReadSingle());
-                float y = NetworkToHostOrder(reader.ReadSingle());
-                float z = NetworkToHostOrder(reader.ReadSingle());
-                float w = NetworkToHostOrder(reader.ReadSingle());
+                byte[] temp = new byte[4];
+
+                Array.Copy(quaternion, 0, temp, 0, 4);
+                float x = NetworkToHostOrder(temp);
+
+                Array.Copy(quaternion, 4, temp, 0, 4);
+                float y = NetworkToHostOrder(temp);
+
+                Array.Copy(quaternion, 8, temp, 0, 4);
+                float z = NetworkToHostOrder(temp);
+
+                Array.Copy(quaternion, 12, temp, 0, 4);
+                float w = NetworkToHostOrder(temp);
 
                 return new float[] { -y, x, -z, w };
 
@@ -134,10 +134,8 @@ public class SocketTest
         }
     }
 
-    private float NetworkToHostOrder(float network)
+    private float NetworkToHostOrder(byte[] bytes)
     {
-        byte[] bytes = BitConverter.GetBytes(network);
-
         if (BitConverter.IsLittleEndian)
             Array.Reverse(bytes);
 
