@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class ServerIO : MonoBehaviour
 {
@@ -7,7 +6,7 @@ public class ServerIO : MonoBehaviour
 
     private InputManager inputManager;
 
-    public Camera myCamera;
+    public VRCamera myCamera;
     public GameObject target;
 
     void Start ()
@@ -16,7 +15,7 @@ public class ServerIO : MonoBehaviour
         socket.sendData(0);
 
         inputManager = new InputManager(socket, target);
-        myCamera.GetComponent<OutputManager>().socket = socket;
+        myCamera.socket = socket;
     }
 
     void Update ()
