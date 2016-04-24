@@ -4,7 +4,7 @@ using UnityEngine;
 
 class InputManager
 {
-    private SocketTest mSocket;
+    private ServerConnection serverConnection;
 
     // target
     private GameObject mTarget;
@@ -14,14 +14,14 @@ class InputManager
     private float[] gyroQuaternion;
     private float[] gyroInitialRotation = null;
 
-    public InputManager(SocketTest socket, GameObject target)
+    public InputManager(ServerConnection socket, GameObject target)
     {
         init(socket, target);
     }
 
-    public void init(SocketTest socket, GameObject target)
+    public void init(ServerConnection socket, GameObject target)
     {
-        mSocket = socket;
+        serverConnection = socket;
 
         mTarget = target;
         targetInitialRotation = target.transform.rotation;
@@ -32,7 +32,7 @@ class InputManager
 
     void readQuaternion()
     {
-        while ((gyroQuaternion = mSocket.readQuaternion()) != null)
+        while ((gyroQuaternion = serverConnection.readQuaternion()) != null)
         {
             if (gyroInitialRotation == null)
                 gyroInitialRotation = gyroQuaternion;

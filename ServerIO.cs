@@ -2,29 +2,20 @@
 
 public class ServerIO : MonoBehaviour
 {
-    private SocketTest socket;
-
-    private InputManager inputManager;
-
-    public VRCamera myCamera;
-    public GameObject target;
+    private Player player;
 
     void Start ()
     {
-        socket = new SocketTest();
-        socket.sendData(0);
-
-        inputManager = new InputManager(socket, target);
-        myCamera.socket = socket;
+        player = new Player("localhost", 2099);
     }
 
     void Update ()
     {
-        inputManager.updateTarget();
+        player.Update();
      }
 
     void OnApplicationQuit()
     {
-        socket.close();
+        player.Finish();
     }
 }
