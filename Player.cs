@@ -2,25 +2,24 @@
 
 class Player
 {
-    private ServerConnection serverConnection;
+    private ClientConnection clientConnection;
 
     private GameObject VRCamera;
     private VRCamera VRCameraLogic;
 
     private InputManager inputManager;
 
-    public Player(string serverIp, int serverPort)
+    public Player(ClientConnection connection)
     {
         // create and init server connection
-        serverConnection = new ServerConnection(serverIp, serverPort);
-        serverConnection.sendData(0);
+        clientConnection = connection;
 
         // instantiate a VRCamera from prefab
-        VRCamera = (GameObject) UnityEngine.Object.Instantiate(Resources.Load("VRCamera"));
+        VRCamera = (GameObject) Object.Instantiate(Resources.Load("VRCamera"));
         VRCameraLogic = VRCamera.GetComponent<VRCamera>();
 
         // init input manager
-        inputManager = new InputManager(serverConnection, VRCamera);
+        inputManager = new InputManager(clientConnection, VRCamera);
     }
 
     internal void Update()
@@ -33,12 +32,21 @@ class Player
     {
         int lenghtBytes = bytes.Length;
 
-        serverConnection.sendData(lenghtBytes);
-        serverConnection.sendData(bytes);
+        clientConnection.sendData(lenghtBytes);
+        clientConnection.sendData(bytes);
     }
 
     internal void Finish()
     {
-        serverConnection.close();
+        VRCameraLogic.Destroy();
+        clientConnection.close();
+    }
+
+    public ClientConnection ClientConnection
+    {
+        get
+        {
+            return clientConnection;
+        }
     }
 }

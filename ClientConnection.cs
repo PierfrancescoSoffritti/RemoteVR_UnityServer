@@ -5,40 +5,41 @@ using System.Net;
 using System.Net.Sockets;
 
 /// <summary>
-/// Helper class that represents a connection to the server.
+/// Helper class that represents a connection to the client.
 /// </summary>
 
-public class ServerConnection
+public class ClientConnection
 {
-    private Socket socket;
+    private Socket clientSocket;
+
+    private bool connected;
 
     private NetworkStream stream;
     private BinaryWriter writer;
     private BinaryReader reader;
 
-    public ServerConnection(string serverAddress, int serverPort)
+    public ClientConnection(Socket socket)
     {
-        IPEndPoint localEndPoint = new IPEndPoint(Dns.GetHostEntry(serverAddress).AddressList[0], serverPort);
-        socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-        connect(localEndPoint);
+        clientSocket = socket;
+        init();
     }
 
-    private void connect(IPEndPoint localEndPoint)
+    private void init()
     {
         try
         {
-            socket.Connect(localEndPoint);
-
-            stream = new NetworkStream(socket);
+            stream = new NetworkStream(clientSocket);
             writer = new BinaryWriter(stream);
             reader = new BinaryReader(stream);
 
-            Debug.Log("Connected to: " + socket.RemoteEndPoint.ToString());
+            connected = true;
+
+            Debug.Log("ClientConnection to: " + clientSocket.RemoteEndPoint.ToString() + " ready ");
         }
         catch (Exception)
         {
-            Debug.Log("Couldn't Connect!");
+            connected = false;
+            Debug.Log("can't create streams!");
         }
     }
 
@@ -52,7 +53,7 @@ public class ServerConnection
         }
         catch (Exception)
         {
-            Debug.Log("Connection Was Closed! while sending byte[]");
+            //Debug.Log("Connection Was Closed! while sending byte[]");
             close();
         }
     }
@@ -69,7 +70,7 @@ public class ServerConnection
 
         } catch (Exception)
         {
-            Debug.Log("Connection Was Closed! while sending int");
+            //Debug.Log("Connection Was Closed! while sending int");
             close();
         }
     }
@@ -101,7 +102,7 @@ public class ServerConnection
         }
         catch (Exception)
         {
-            Debug.Log("Connection Was Closed! while reading quaternion");
+            //Debug.Log("Connection Was Closed! while reading quaternion");
             close();
             return null;
         }
@@ -117,7 +118,22 @@ public class ServerConnection
 
     public void close()
     {
-        stream.Close();
-        socket.Close();
+        if (connected)
+        {
+            connected = false;
+
+            stream.Close();
+            clientSocket.Close();
+
+            Debug.Log("Closed connection with client");
+        }
+    }
+
+    public bool Connected
+    {
+        get
+        {
+            return connected;
+        }
     }
 }

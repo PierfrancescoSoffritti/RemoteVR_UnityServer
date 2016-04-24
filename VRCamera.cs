@@ -43,6 +43,12 @@ public class VRCamera : MonoBehaviour
         return bytes;
     }
 
+    internal void Destroy()
+    {
+        Destroy(gameObject);
+        RenderTexture.active = null;
+    }
+
     void Update()
     {
         AdjustCameras();

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using UnityEngine;
 
 class InputManager
 {
-    private ServerConnection serverConnection;
+    private ClientConnection clientConnection;
 
     // target
     private GameObject mTarget;
@@ -14,14 +13,14 @@ class InputManager
     private float[] gyroQuaternion;
     private float[] gyroInitialRotation = null;
 
-    public InputManager(ServerConnection socket, GameObject target)
+    public InputManager(ClientConnection socket, GameObject target)
     {
         init(socket, target);
     }
 
-    public void init(ServerConnection socket, GameObject target)
+    public void init(ClientConnection socket, GameObject target)
     {
-        serverConnection = socket;
+        clientConnection = socket;
 
         mTarget = target;
         targetInitialRotation = target.transform.rotation;
@@ -32,7 +31,7 @@ class InputManager
 
     void readQuaternion()
     {
-        while ((gyroQuaternion = serverConnection.readQuaternion()) != null)
+        while ((gyroQuaternion = clientConnection.readQuaternion()) != null)
         {
             if (gyroInitialRotation == null)
                 gyroInitialRotation = gyroQuaternion;
@@ -41,7 +40,7 @@ class InputManager
 
     public void updateTarget()
     {
-        if(gyroInitialRotation != null)
+        if(gyroInitialRotation != null && clientConnection.Connected)
         { 
             Quaternion offsetRotation = 
                 Quaternion.Inverse(new Quaternion(gyroInitialRotation[0], gyroInitialRotation[1], gyroInitialRotation[2], gyroInitialRotation[3])) 
