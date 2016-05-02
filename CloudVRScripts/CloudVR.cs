@@ -38,6 +38,9 @@ public class CloudVR : MonoBehaviour
         players.ForEach(player => player.Finish());
     }
 
+    /// <summary>
+    /// Callback called from Server when a new client is connected.
+    /// </summary>
     void OnClientConnected(object sender, OnClientConnectedEventArgs args) 
     {
         players.Add(new Player(args.ClientConnection));

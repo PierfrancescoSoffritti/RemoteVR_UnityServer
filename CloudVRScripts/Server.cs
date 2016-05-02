@@ -31,7 +31,7 @@ class Server
     {
         int port = DEFAULT_PORT;
 
-        IPEndPoint localEndPoint = new IPEndPoint(Dns.GetHostEntry(Dns.GetHostName()).AddressList[0], port);
+        IPEndPoint localEndPoint = new IPEndPoint(Dns.GetHostEntry(Dns.GetHostName()).AddressList[1], port);
         serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         // Bind the socket to the local endpoint and listen for incoming connections.
@@ -45,7 +45,7 @@ class Server
                 block.Reset();
 
                 // Start an asynchronous socket to listen for connections.
-                Debug.Log("Waiting for a connection...");
+                Debug.Log("Waiting for a connection on " +Dns.GetHostEntry(Dns.GetHostName()).AddressList[1] + " : " +port +"...");
                 serverSocket.BeginAccept(new AsyncCallback(OnConnect), serverSocket);
 
                 block.WaitOne();

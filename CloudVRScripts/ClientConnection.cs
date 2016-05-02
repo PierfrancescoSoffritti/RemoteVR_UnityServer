@@ -42,6 +42,23 @@ public class ClientConnection
         }
     }
 
+    internal int[] readScreenResolution()
+    {
+        try
+        {
+            int[] screenResolution = new int[2];
+            screenResolution[0] = IPAddress.NetworkToHostOrder(reader.ReadInt32());
+            screenResolution[1] = IPAddress.NetworkToHostOrder(reader.ReadInt32());
+
+            return screenResolution;
+        }
+        catch (Exception)
+        {
+            close();
+            return null;
+        }
+    }
+
     public void sendData(byte[] data)
     {
         //Debug.Log("is connected and i'm sending a byte[]");

@@ -18,6 +18,11 @@ class Player
         VRCamera = (GameObject) Object.Instantiate(Resources.Load("VRCamera"));
         VRCameraLogic = VRCamera.GetComponent<VRCamera>();
 
+        int[] screenResolution = connection.readScreenResolution();
+        Debug.Log("Client screen resolution: " +screenResolution[0] +" x " + screenResolution[1]);
+        VRCameraLogic.textureWidth = screenResolution[0];
+        VRCameraLogic.textureHeight = screenResolution[1];
+
         // init input manager
         inputManager = new InputManager(clientConnection, VRCamera);
     }

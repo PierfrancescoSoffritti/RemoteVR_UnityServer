@@ -6,13 +6,13 @@ public class VRCamera : MonoBehaviour
     private RenderTexture renderTexture;
     private Texture2D texture;
 
-    public int textureWidth = 1920 / 4;
-    public int textureHeight = 1080 / 4;
+    public int textureWidth = 1920;
+    public int textureHeight = 1080;
 
     public Camera _cameraLeft;
     public Camera _cameraRight;
 
-    public float Distance = 0.1f;
+    public float Distance = 0f;
     public float Degree = 0f;
 
     private float leftCameraX;
@@ -20,11 +20,18 @@ public class VRCamera : MonoBehaviour
     private float rightCameraX;
     private float rightCameraDegree;
 
+    private float deltaTime = 0.0f;
+    private float fps;
+
+    private float lastFrameRateCheckTime = -1;
+
+    public int imageScaleFactor = 1;
+
     void Start()
     {
-        renderTexture = new RenderTexture(textureWidth, textureHeight, 16);
+        renderTexture = new RenderTexture(textureWidth/imageScaleFactor, textureHeight/imageScaleFactor, 16);
         texture = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.RGB24, false);
-
+        
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
         _cameraLeft.targetTexture = renderTexture;
@@ -52,6 +59,27 @@ public class VRCamera : MonoBehaviour
     void Update()
     {
         AdjustCameras();
+
+        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
+        fps = 1 / deltaTime;
+
+        // check fps every 5 seconds
+        if (Time.time - lastFrameRateCheckTime > 5)
+        {
+            // if fps < 50, reduce image quality
+            if (fps < 50)
+            {
+                imageScaleFactor++;
+
+                renderTexture = new RenderTexture(textureWidth / imageScaleFactor, textureHeight / imageScaleFactor, 16);
+                texture = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.RGB24, false);
+
+                _cameraLeft.targetTexture = renderTexture;
+                _cameraRight.targetTexture = renderTexture;
+            }
+
+            lastFrameRateCheckTime = Time.time;
+        }
     }
 
     private void AdjustCameras()
