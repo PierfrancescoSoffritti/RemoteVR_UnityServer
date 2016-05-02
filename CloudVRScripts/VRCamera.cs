@@ -63,11 +63,11 @@ public class VRCamera : MonoBehaviour
         deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
         fps = 1 / deltaTime;
 
-        // check fps every 5 seconds
-        if (Time.time - lastFrameRateCheckTime > 5)
+        // check fps every 1 second
+        if (Time.time - lastFrameRateCheckTime > 1)
         {
-            // if fps < 50, reduce image quality
-            if (fps < 50)
+            // if fps < 55, reduce image quality
+            if (fps < 55)
             {
                 imageScaleFactor++;
 
