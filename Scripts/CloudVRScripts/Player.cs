@@ -15,7 +15,7 @@ class Player
         clientConnection = connection;
 
         // instantiate a VRCamera from prefab
-        VRCamera = (GameObject) Object.Instantiate(Resources.Load("VRCamera"));
+        VRCamera = (GameObject) Object.Instantiate(Resources.Load("VRCharacter"));
         VRCameraLogic = VRCamera.GetComponent<VRCamera>();
 
         int[] screenResolution = connection.readScreenResolution();
