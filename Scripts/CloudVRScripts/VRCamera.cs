@@ -60,6 +60,7 @@ public class VRCamera : MonoBehaviour
     {
         AdjustCameras();
 
+        /*
         deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
         fps = 1 / deltaTime;
 
@@ -80,6 +81,7 @@ public class VRCamera : MonoBehaviour
 
             lastFrameRateCheckTime = Time.time;
         }
+        */
     }
 
     private void AdjustCameras()

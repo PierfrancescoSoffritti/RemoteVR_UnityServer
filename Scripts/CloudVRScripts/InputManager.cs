@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using UnityEngine;
 
-class InputManager
+public class InputManager
 {
     private ClientConnection clientConnection;
 
@@ -73,13 +73,6 @@ class InputManager
             return;
 
         updateRotation();
-        updateWalk();
-    }
-
-    private void updateWalk()
-    {
-        if (move)
-            mTarget.transform.position = mTarget.transform.position + mTarget.transform.forward * 5 * Time.deltaTime;
     }
 
     private void updateRotation()
@@ -89,5 +82,13 @@ class InputManager
                 * new Quaternion(gyroQuaternion[0], gyroQuaternion[1], gyroQuaternion[2], gyroQuaternion[3]);
 
         mTarget.transform.rotation = targetInitialRotation * offsetRotation;
+    }
+
+    public bool Move
+    {
+        get
+        {
+            return move;
+        }
     }
 }
