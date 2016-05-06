@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class CloudVR : MonoBehaviour
 {
-    private Server server;
+    public bool useTCP = true;
 
+    private IServer server;
     private List<Player> players;
 
     void Start ()
@@ -13,7 +14,11 @@ public class CloudVR : MonoBehaviour
 
         players = new List<Player>();
 
-        server = new Server();
+        if (useTCP)
+            server = new ServerTCP();
+        else
+            server = new ServerUDP();
+
         server.ClientConnected += OnClientConnected;
     }
 
@@ -21,9 +26,9 @@ public class CloudVR : MonoBehaviour
     {
         players.ForEach(player => 
         {
-            if (player.ClientConnection.Connected)
+            try {
                 player.Update();
-            else
+            } catch
             {
                 player.Finish();
                 players.Remove(player);

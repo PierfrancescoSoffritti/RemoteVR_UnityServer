@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class InputManager
 {
-    private ClientConnection clientConnection;
+    private IClient clientConnection;
 
     // target
     private GameObject mTarget;
@@ -16,12 +16,12 @@ public class InputManager
     // touch
     private bool move = false;
 
-    public InputManager(ClientConnection socket, GameObject target)
+    public InputManager(IClient socket, GameObject target)
     {
         init(socket, target);
     }
 
-    public void init(ClientConnection socket, GameObject target)
+    public void init(IClient socket, GameObject target)
     {
         clientConnection = socket;
 
@@ -37,7 +37,7 @@ public class InputManager
     {
         Input input;
 
-        while(clientConnection.Connected && (input = clientConnection.readInput()) != null)
+        while((input = clientConnection.readInput()) != null)
         {
             if (input is GyroInput)
                 readQuaternion((GyroInput) input);
@@ -69,7 +69,7 @@ public class InputManager
 
     public void updateTarget()
     {
-        if (gyroInitialRotation == null || !clientConnection.Connected)
+        if (gyroInitialRotation == null)
             return;
 
         updateRotation();

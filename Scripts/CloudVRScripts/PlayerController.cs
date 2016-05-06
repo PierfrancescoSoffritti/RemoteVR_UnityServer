@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 m_MoveDir = Vector3.zero;
     private CharacterController m_CharacterController;
-    private float m_StepCycle;
 
     public InputManager inputManager;
 
@@ -21,7 +20,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         m_CharacterController = GetComponent<CharacterController>();
-        m_StepCycle = 0f;
     }
 
     private void FixedUpdate()

@@ -5,7 +5,7 @@
 [RequireComponent(typeof(PlayerController))]
 class Player
 {
-    private ClientConnection clientConnection;
+    private IClient clientConnection;
 
     private GameObject playerObject;
     private VRCamera VRCamera;
@@ -13,7 +13,7 @@ class Player
     private InputManager inputManager;
     private PlayerController playerController;
 
-    public Player(ClientConnection connection)
+    public Player(IClient connection)
     {
         // create and init server connection
         clientConnection = connection;
@@ -43,19 +43,16 @@ class Player
 
     private void sendFrame(byte[] bytes)
     {
-        int lenghtBytes = bytes.Length;
-
-        clientConnection.sendData(lenghtBytes);
-        clientConnection.sendData(bytes);
+        clientConnection.sendImage(bytes);
     }
 
     internal void Finish()
     {
         VRCamera.Destroy();
-        clientConnection.close();
+        clientConnection.disconnect();
     }
 
-    public ClientConnection ClientConnection
+    public IClient ClientConnection
     {
         get
         {
