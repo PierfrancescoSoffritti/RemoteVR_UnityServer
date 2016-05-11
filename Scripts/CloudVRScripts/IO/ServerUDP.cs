@@ -5,7 +5,9 @@ using UnityEngine;
 
 class ServerUDP : IServer
 {
-    private readonly int DEFAULT_PORT = 2098;
+    private static readonly int DEFAULT_PORT = 2099;
+
+    private int clientPort = DEFAULT_PORT;
 
     private UdpClient udpClient;
 
@@ -15,13 +17,13 @@ class ServerUDP : IServer
         udpClient = new UdpClient(DEFAULT_PORT);
         IPEndPoint IPendPoint = new IPEndPoint(IPAddress.Any, DEFAULT_PORT);
 
-        UdpState udpState = new UdpState();
-        udpState.endPoint = IPendPoint;
-        udpState.udpClient = udpClient;
-
         while (listen)
         {
             block.Reset();
+
+            UdpState udpState = new UdpState();
+            udpState.endPoint = IPendPoint;
+            udpState.udpClient = udpClient;
 
             // Start an asynchronous socket to listen for connections.
             foreach (IPAddress hostName in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
@@ -38,14 +40,19 @@ class ServerUDP : IServer
     // callback for Async beginAccept
     private void OnConnect(IAsyncResult asyncResult)
     {
-        UdpClient udpClient = (UdpClient)((UdpState)(asyncResult.AsyncState)).udpClient;
-        IPEndPoint endPoint = (IPEndPoint)((UdpState)(asyncResult.AsyncState)).endPoint;
+        UdpState udpState = (UdpState) asyncResult.AsyncState;
+
+        UdpClient udpClient = udpState.udpClient;
+        IPEndPoint endPoint = udpState.endPoint;
 
         byte[] message = udpClient.EndReceive(asyncResult, ref endPoint);
         Debug.Log("client connected");
 
-        udpClient.Send(message, message.Length, endPoint);
-        NotifyNewClientConnected(new ClientUDP(new IPEndPoint(endPoint.Address, endPoint.Port)));
+        clientPort++;
+
+        IClient client = new ClientUDP(endPoint, clientPort);
+        
+        NotifyNewClientConnected(client);
 
         // Signal the thread to continue.
         block.Set();

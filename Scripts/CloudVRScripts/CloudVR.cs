@@ -6,13 +6,11 @@ public class CloudVR : MonoBehaviour
     public bool useTCP = true;
 
     private IServer server;
-    private List<Player> players;
+    private List<Player> players = new List<Player>();
 
-    void Start ()
+    void Awake ()
     {
         var initDispatcher = UnityThreadHelper.Dispatcher;
-
-        players = new List<Player>();
 
         if (useTCP)
             server = new ServerTCP();

@@ -6,18 +6,20 @@ using UnityEngine;
 
 public class ClientUDP : IClient
 {
-    private readonly int DEFAULT_PORT = 2099;
-
     private IPEndPoint clientIPEndPoint;
     private UdpClient udpClient;
 
-    public ClientUDP(IPEndPoint clientIPEndPoint)
+    public ClientUDP(IPEndPoint clientIPEndPoint, int serverPort)
     {
         this.clientIPEndPoint = clientIPEndPoint;
 
-        udpClient = new UdpClient(DEFAULT_PORT);
+        udpClient = new UdpClient(serverPort);
         udpClient.Connect(clientIPEndPoint);
         udpClient.Client.ReceiveTimeout = 5000;
+
+        // tell the client that the session has started.
+        // this is also usefull in order to tell the client on which port it has to communicate
+        udpClient.Send(new byte[1], 1);
     }
 
     public Input readInput()
@@ -80,7 +82,6 @@ public class ClientUDP : IClient
     public void disconnect()
     {
         udpClient.Close();
-
         Debug.Log("Closed connection with client");
     }
 }
