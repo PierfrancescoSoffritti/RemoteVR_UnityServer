@@ -36,6 +36,10 @@ class IOUtils
         return touchInput;
     }
 
+    /// <summary>
+    /// Convert a byte array representing a quaternion into a <see cref="GyroInput"/>.
+    /// The order of the quaternion numbers is changed, because the Android's orientation is not compatible with Unity.
+    /// </summary>
     private static GyroInput readQuaternion(byte[] quaternion)
     {
         byte[] temp = new byte[4];

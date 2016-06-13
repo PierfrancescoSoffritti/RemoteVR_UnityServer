@@ -4,6 +4,9 @@ using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
 
+/// <summary>
+/// This class is a UDP endpoint for s with the client.
+/// </summary>
 public class ClientUDP : IClient
 {
     private IPEndPoint clientIPEndPoint;

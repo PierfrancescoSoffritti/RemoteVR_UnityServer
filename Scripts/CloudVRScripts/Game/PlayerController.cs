@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Class used to update the rotation and position of the player.
+/// </summary>
 [RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(InputManager))]
+[RequireComponent(typeof(RemoteInputManager))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
@@ -12,17 +15,51 @@ public class PlayerController : MonoBehaviour
     private float m_GravityMultiplier;
 
     private Vector3 m_MoveDir = Vector3.zero;
+    private Quaternion targetInitialRotation;
+
+    private GameObject target;
+
     private CharacterController m_CharacterController;
 
-    public InputManager inputManager;
+    public RemoteInputManager inputManager;
 
-    // Use this for initialization
     private void Start()
     {
         m_CharacterController = GetComponent<CharacterController>();
     }
 
+    /// <summary>
+    /// Call this method when creating the <see cref="Player"/>
+    /// </summary>
+    public void init(GameObject target, RemoteInputManager inputManager)
+    {
+        this.target = target;
+        this.inputManager = inputManager;
+
+        targetInitialRotation = target.transform.rotation;
+    }
+
     private void FixedUpdate()
+    {
+        if (target == null)
+            return;
+
+        updateRotation();
+        updatePosition();
+    }
+
+    /// <summary>
+    /// Updates the rotation of the target
+    /// </summary>
+    private void updateRotation()
+    {
+        target.transform.rotation = targetInitialRotation * inputManager.Rotation;
+    }
+
+    /// <summary>
+    /// Updates the position of the target
+    /// </summary>
+    private void updatePosition()
     {
         float speed;
         GetInput(out speed);
@@ -43,7 +80,7 @@ public class PlayerController : MonoBehaviour
 
     private void GetInput(out float speed)
     {
-        if (inputManager.Move)
+        if (inputManager.TouchDown)
             speed = m_WalkSpeed;
         else
             speed = 0;

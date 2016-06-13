@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This is the main class of the project, attach this to any game object in your scene and you're ready to go.
+/// </summary>
+
 public class CloudVR : MonoBehaviour
 {
     public bool useTCP = true;
@@ -42,7 +46,8 @@ public class CloudVR : MonoBehaviour
     }
 
     /// <summary>
-    /// Callback called from Server when a new client is connected.
+    /// Callback called from the Server when a new client is connected.
+    /// Creates a new Player.
     /// </summary>
     void OnClientConnected(object sender, OnClientConnectedEventArgs args) 
     {

@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// A simple component to show FPS on screen. Attach this to any game object in your scene and you're ready to go.
+/// </summary>
+
 public class FPSDisplay : MonoBehaviour
 {
     float deltaTime = 0.0f;

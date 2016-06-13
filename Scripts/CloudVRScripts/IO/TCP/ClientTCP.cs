@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using UnityEngine;
 
 /// <summary>
-/// Helper class that represents a TCP connection to the client.
+/// This class that represents a TCP connection with the client.
 /// </summary>
 
 public class ClientTCP : IClient
@@ -39,6 +39,9 @@ public class ClientTCP : IClient
         }
     }
 
+    /// <summary>
+    /// Read the screen resolution of the client.
+    /// </summary>
     public int[] readScreenResolution()
     {
         try

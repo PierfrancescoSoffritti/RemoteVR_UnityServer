@@ -1,10 +1,16 @@
 ﻿using System;
 
-// should be done with generics .. but c# is driving me crazy :|
+/// <summary>
+/// Every game's input type must implement this interface.
+/// </summary>
+// should be done with generics and not be an empty interface .. but at the moment c# is driving me crazy :|
 public interface Input
 {
 }
 
+/// <summary>
+/// Gyroscope input. The rotation is represented as a quaternion, stored in a float array.
+/// </summary>
 public class GyroInput : Input
 {
     private float[] data;
@@ -26,6 +32,9 @@ public class GyroInput : Input
     }
 }
 
+/// <summary>
+/// Touch input. Can be of two types: touch up or touch down.
+/// </summary>
 public class TouchInput : Input
 {
     public enum TouchTypes : int { Down = 0, Up = 1};
