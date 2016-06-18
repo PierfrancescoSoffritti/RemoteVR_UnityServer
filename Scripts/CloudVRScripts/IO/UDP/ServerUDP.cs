@@ -28,7 +28,8 @@ class ServerUDP : IServer
             // Start an asynchronous socket to listen for connections.
             foreach (IPAddress hostName in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
             {
-                Debug.Log("Waiting for a connection on " + hostName + " : " + DEFAULT_PORT + "...");
+                if (!hostName.ToString().Contains(":"))
+                    Debug.Log("Waiting for a connection on " + hostName + " : " + DEFAULT_PORT + "...");
             }
 
             udpClient.BeginReceive(new AsyncCallback(OnConnect), udpState);
