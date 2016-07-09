@@ -26,4 +26,4 @@ Each rendered frame is sent as JPG.
 ## Problems
 - A lot
 - ...
-- It's super heavy to perform high quality rendering. The resolution of the rendering is the same resolution of the client's screen. The process of converting each rendered frame to jpg and then send it to the client it's heavy (take a look at the profiler) and causes a sensible drop in the frame rate.
+- It's super heavy to perform high quality rendering. The resolution of the rendering is the same resolution of the client's screen. The process of converting each rendered frame to jpg and then send it to the client is heavy (take a look at the profiler) and causes a sensible drop in the frame rate.
