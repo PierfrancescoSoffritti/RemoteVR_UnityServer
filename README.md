@@ -21,7 +21,7 @@ Server and client communicate with this simple protocol:
 <img height="350" src="https://github.com/PierfrancescoSoffritti/RemoteVR_UnityServer/blob/master/pics/protocol.png" />
 
 The second message "send screen resolution" could be extended to "send client info" and contain more info like the client's name, location ecc.<br/><br/>
-Each rendered frame is sent a JPG.
+Each rendered frame is sent as JPG.
 
 ## Problems
 - A lot
