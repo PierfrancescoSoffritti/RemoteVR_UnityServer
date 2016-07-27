@@ -20,6 +20,7 @@ With this approach is easy to have more than one person in the same virtual spac
 - Launch the .exe file, when prompted allow network access.
 - Install the .apk client on an Android device.
 - Set the IP and port number of your PC in the Android client.
+- Set "use UDP" in the Android client. Because the provided demos are using UDP.
 - Press play and use the app.
 
 ## Communication  between server and client
