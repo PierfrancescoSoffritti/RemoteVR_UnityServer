@@ -4,6 +4,7 @@ Unity server for the RemoteVR project.
 This server can communicate with the RemoteVR Client. At the moment the only implementation of the client is an Android app that can be found here [RemoteVR_AndroidClient](https://github.com/PierfrancescoSoffritti/RemoteVR_AndroidClient).
 
 <img src="https://github.com/PierfrancescoSoffritti/RemoteVR_UnityServer/blob/master/pics/gyroscope.gif" />
+<img src="https://github.com/PierfrancescoSoffritti/RemoteVR_UnityServer/blob/master/pics/museum.gif" />
 
 This project is a collection of scripts, prefabs and a 3D model. All that is contained in the provided RemoteVR.unitypackage file. Just open it and you're good to go. Also, the package contains a sample scene, open it, press play, connect the client and it's done.
 
@@ -13,7 +14,13 @@ The concept is: run the VR application in the server, use the client to connect 
 With this approach is easy to have more than one person in the same virtual space. Also, those persons can use different devices and OS to access the same VR experience.
 
 ## Try a demo
-[Click here](notuploadedYET) to download a simple ready-to-play demo. The zip file contains both the server's .exe and client's .apk. Read the readme in the zip to know how to use the demo.
+[Click here](https://drive.google.com/open?id=0B4BhGgWS02sBVmVRX0lTYzhKczA) to download some simple, ready-to-play demos. The zip files contains both the server's .exe and client's .apk.
+
+### How to use
+- Launch the .exe file, when prompted allow network access.
+- Install the .apk client on an Android device.
+- Set the IP and port number of your PC in the Android client.
+- Press play and use the app.
 
 ## Communication  between server and client
 Server and client communicate with this simple protocol:
