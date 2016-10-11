@@ -8,7 +8,7 @@ This server can communicate with the RemoteVR Client. At the moment the only imp
 
 This project is a collection of scripts, prefabs and a 3D model. All that is contained in the provided RemoteVR.unitypackage file. Just open it and you're good to go. Also, the package contains a sample scene, open it, press play, connect the client and it's done.
 
-## What is the RemoteVR project
+## RemoteVR project
 The RemoteVR project is a simple attempt to platform/hardware independent multiplayer Virtual Reality.<br/>
 The concept is: run the VR application in the server, use the client to connect to the server, interact with the VR application in streaming.
 With this approach is easy to have more than one person in the same virtual space. Also, those persons can use different devices and OS to access the same VR experience.
