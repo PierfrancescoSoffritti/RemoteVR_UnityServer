@@ -1,4 +1,4 @@
-## RemoteVR project
+# RemoteVR project
 The RemoteVR project is a simple attempt to obtain platform-independent multiplayer Virtual Reality.<br/>
 The gist of the idea is to run the VR application on a server and to use many clients to interact with it, in streaming.
 With this approach is easy to have more than one person in the same virtual space. Also, those people can use different devices and OS to access the same VR experience.
